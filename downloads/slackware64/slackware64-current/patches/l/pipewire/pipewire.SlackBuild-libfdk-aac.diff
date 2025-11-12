@@ -1,0 +1,12 @@
+## This adds acc bluetooth codec support, to pipewire.
+
+--- pipewire.SlackBuild	2025-11-11 14:09:59.009118602 -0800
++++ pipewire.SlackBuild.new	2025-11-11 14:09:45.098913864 -0800
+@@ -103,6 +103,7 @@
+   -Dvulkan=enabled \
+   -Djack=disabled \
+   -Dpipewire-jack=disabled \
++  -Dbluez5-codec-aac=enabled \
+   -Dsession-managers=[] \
+   .. || exit 1
+   "${NINJA:=ninja}" $NUMJOBS || exit 1
