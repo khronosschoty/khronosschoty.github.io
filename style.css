@@ -1,0 +1,28 @@
+body {
+  background-color: #002b36; /* Solarized base03 */
+  color: #839496;            /* base0 */
+  font-family: monospace;
+  padding: 2em;
+}
+
+a {
+  color: #268bd2;            /* blue */
+  text-decoration: none;
+}
+
+a:hover {
+  color: #b58900;            /* yellow */
+}
+
+.terminal {
+  background-color: #073642; /* base02 */
+  border-radius: 8px;
+  padding: 1em;
+  box-shadow: 0 0 10px #002b36;
+}
+
+.prompt {
+  color: #859900; /* green */
+  font-weight: bold;
+  margin-top: 1em;
+}
