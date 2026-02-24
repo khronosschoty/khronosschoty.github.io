@@ -1,0 +1,17 @@
+schoty@pangolin.localhost 
+------------------------- 
+OS: Slackware 15.0 x86_64 (post 15.0 -current) x86_64 
+Host: System76 Pangolin 
+Kernel: 6.12.74 
+Uptime: 22 hours, 23 mins 
+Packages: 1624 (pkgtool) 
+Shell: bash 5.3.9 
+Resolution: 1920x1080 
+WM: spectrwm 
+Theme: GTK+ [GTK2], Greybird [GTK3] 
+Icons: Adwaita [GTK2], elementary-xfce-dark [GTK3] 
+Terminal: tmux 
+CPU: AMD Ryzen 5 5500U with Radeon Graphics (12) @ 4.056GHz 
+GPU: AMD ATI Lucienne 
+Memory: 9826MiB / 15321MiB 
+
