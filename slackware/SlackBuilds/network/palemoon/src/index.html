@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <style>
+    *, body {
+        padding: 0;
+        margin: 0;
+    }
+    a { text-decoration: none; }
+
+     
+    :root {
+        --base03: #002b36;
+        --base02: #073642;
+        --base01: #586e75;
+        --base00: #657b83;
+        --base0: #839496;
+        --base1: #93a1a1;
+        --base2: #eee8d5;
+        --base3: #fdf6e3;
+        --yellow: #b58900;
+        --orange: #cb4b16;
+        --red: #dc322f;
+        --magenta: #d33682;
+        --violet: #6c71c4;
+        --blue: #268bd2;
+        --cyan: #2aa198;
+        --green: #859900;
+    }
+
+    body {
+        font-family: 'Menlo', 'DejaVu Sans Mono', 'Liberation Mono', monospace;
+        line-height: 1.5;
+    }
+
+    h1 {
+        padding: 16px;
+        font-weight: normal;
+        letter-spacing: -0.5px;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    th, td {
+        text-align: left;
+        padding: 10px 16px;
+    }
+
+    tr:hover {
+        background-color: rgba(0, 0, 0, 0.05);
+    }
+
+    span.icon {
+        margin-right: 10px;
+        opacity: 0.8;
+    }
+
+     
+    @media (prefers-color-scheme: light) {
+        body {
+            background-color: var(--base3);
+            color: var(--base00);
+        }
+        h1 {
+            color: var(--base01);
+            background-color: var(--base2);
+            border-bottom: 1px solid var(--base1);
+        }
+        a:link { color: var(--blue); }
+        a:visited { color: var(--violet); }
+        a:hover { color: var(--cyan); text-decoration: underline; }
+
+        th {
+            color: var(--base01);
+            border-bottom: 1px solid var(--base1);
+        }
+        td {
+            border-bottom: 1px solid var(--base2);
+        }
+        tr:hover {
+            background-color: var(--base2);
+        }
+    }
+
+     
+    @media (prefers-color-scheme: dark) {
+        body {
+            background-color: var(--base03);
+            color: var(--base0);
+        }
+        h1 {
+            color: var(--base1);
+            background-color: var(--base02);
+            border-bottom: 1px solid var(--base01);
+        }
+        a:link { color: var(--blue); }
+        a:visited { color: var(--violet); }
+        a:hover { color: var(--cyan); text-decoration: underline; }
+
+        th {
+            color: var(--base1);
+            border-bottom: 1px solid var(--base01);
+        }
+        td {
+            border-bottom: 1px solid var(--base02);
+        }
+        tr:hover {
+            background-color: var(--base02);
+        }
+    }
+    </style>
+    <meta charset="UTF-8">
+</head>
+<body>
+    
+<pre>
+palemoon (Web browser -- BUILD FROM SOURCE)
+
+This SlackBuild builds Pale Moon from source.
+For a binary repackage, see 'palemoon-bin' at SlackBuilds.org.
+
+Pale Moon is an Open Source, Goanna-based web browser available for
+Microsoft Windows and Linux (with other operating systems in
+development), focusing on efficiency and ease of use.
+
+This SlackBuild attempts to compile, build and package Pale Moon,
+Slackware style, in a manner that conforms to official Pale Moon Linux
+releases; while, at the same time, providing useful and easy ways to
+deviate if desired. This SlackBuild may conflict with the alternative
+SlackBuild known, here at SBo, as "palemoon-bin"; which repackages
+binaries offically released by the Pale Moon devs.
+
+------------------------------------------------------------------------
+
+See http://docs.slackware.com/howtos:software:palemoon for additional
+tips and help resources.
+
+Using the Oxygen theme is known to cause Pale Moon to crash; if you are
+experiencing crashes, and segfaults, make sure you are not using this
+theme; or use Alienbob's patched oxygen-gtk2; which will fix this issue.
+http://www.slackware.com/~alien/slackbuilds/oxygen-gtk2/build/ See the
+help doc link above for other creative tips and workarounds.
+
+A native fork of FireFox's developer tools exists as an external add-on
+or internally. Pale Moon by default ships with the developer tools
+internally; if this is undesirable, dev tools can be disabled by passing
+the script the parameter:
+
+  DEVTOOLS=no ./palemoon.SlackBuild
+
+Pale Moon's default is to build, ship, and use its own internal
+dictionary; if desired, however, do USE_SYSTEM_HUNSPELL=yes
+./palemoon.SlackBuild, to use the Slackware system Hunspell instead.
+This assumes you have dictionaries such as hunspell-en or hunspell-es
+installed in /usr/share/hunspell -- the location that a few SlackBuilds
+at SBo install them.
+
+If your processor doesn't support sse2 instructions or you get
+segfaults, try looking in the SlackBuild for the OPTIMIZE build option
+(eventually refer to the Pale Moon developers for help).
+
+jack-audio-connection-kit is an optional dependency and, if detected,
+automatically built. If this is undesirable you can blacklist jack, by
+passing the variable:
+
+  BLACKLIST_JACK=yes ./palemoon.SlackBuild
+
+ALSA=1 will disable pulse audio and build a pure alsa Pale Moon.
+GLIB-C-1PATCH=1 is a patch that will enable compiling on newer glibc 
+(such as is found in Slackware current).
+
+To enable debug information, pass the script the parameter
+
+  ENABLE_DEBUG=yes
+</pre>
+    <table>
+        <tr>
+            <th>Name</th>
+            <th>Size</th>
+            <th>Last Modified</th>
+			<th>Description</th>
+        </tr>
+        
+        <tr>
+            <td class="filename" colspan="3"><a href="../index.html">
+                <span class="icon">🔼</span>Go Up</a>
+            </td>
+        </tr>
+        
+        
+        <tr>
+            <td class="filename">
+                <span class="icon">
+                
+                📄
+                
+                </span>
+                <a href="Pale-Moon-34.0.1_Release.tar.gz">Pale-Moon-34.0.1_Release.tar.gz</a>
+            </td>
+            <td class="size">
+                
+                5.35 MB
+                
+            </td>
+            <td class="date">
+                
+                2026-02-25 05:09:13 PST
+                
+            </td>
+			<td class="description">
+				
+
+			</td>
+        </tr>
+        
+        <tr>
+            <td class="filename">
+                <span class="icon">
+                
+                📄
+                
+                </span>
+                <a href="UXP-RB_20260121-part00">UXP-RB_20260121-part00</a>
+            </td>
+            <td class="size">
+                
+                45.00 MB
+                
+            </td>
+            <td class="date">
+                
+                2026-02-25 07:08:34 PST
+                
+            </td>
+			<td class="description">
+				
+
+			</td>
+        </tr>
+        
+        <tr>
+            <td class="filename">
+                <span class="icon">
+                
+                📄
+                
+                </span>
+                <a href="UXP-RB_20260121-part01">UXP-RB_20260121-part01</a>
+            </td>
+            <td class="size">
+                
+                45.00 MB
+                
+            </td>
+            <td class="date">
+                
+                2026-02-25 07:08:34 PST
+                
+            </td>
+			<td class="description">
+				
+
+			</td>
+        </tr>
+        
+        <tr>
+            <td class="filename">
+                <span class="icon">
+                
+                📄
+                
+                </span>
+                <a href="UXP-RB_20260121-part02">UXP-RB_20260121-part02</a>
+            </td>
+            <td class="size">
+                
+                45.00 MB
+                
+            </td>
+            <td class="date">
+                
+                2026-02-25 07:08:35 PST
+                
+            </td>
+			<td class="description">
+				
+
+			</td>
+        </tr>
+        
+        <tr>
+            <td class="filename">
+                <span class="icon">
+                
+                📄
+                
+                </span>
+                <a href="UXP-RB_20260121-part03">UXP-RB_20260121-part03</a>
+            </td>
+            <td class="size">
+                
+                45.00 MB
+                
+            </td>
+            <td class="date">
+                
+                2026-02-25 07:08:35 PST
+                
+            </td>
+			<td class="description">
+				
+
+			</td>
+        </tr>
+        
+        <tr>
+            <td class="filename">
+                <span class="icon">
+                
+                📄
+                
+                </span>
+                <a href="UXP-RB_20260121-part04">UXP-RB_20260121-part04</a>
+            </td>
+            <td class="size">
+                
+                45.00 MB
+                
+            </td>
+            <td class="date">
+                
+                2026-02-25 07:08:35 PST
+                
+            </td>
+			<td class="description">
+				
+
+			</td>
+        </tr>
+        
+        <tr>
+            <td class="filename">
+                <span class="icon">
+                
+                📄
+                
+                </span>
+                <a href="UXP-RB_20260121-part05">UXP-RB_20260121-part05</a>
+            </td>
+            <td class="size">
+                
+                43.22 MB
+                
+            </td>
+            <td class="date">
+                
+                2026-02-25 07:08:35 PST
+                
+            </td>
+			<td class="description">
+				
+
+			</td>
+        </tr>
+        
+        <tr>
+            <td class="filename">
+                <span class="icon">
+                
+                📄
+                
+                </span>
+                <a href="autoconf-2.13-consolidated_fixes-1.patch.gz">autoconf-2.13-consolidated_fixes-1.patch.gz</a>
+            </td>
+            <td class="size">
+                
+                5.73 KB
+                
+            </td>
+            <td class="date">
+                
+                2018-06-14 07:01:00 PDT
+                
+            </td>
+			<td class="description">
+				
+
+			</td>
+        </tr>
+        
+        <tr>
+            <td class="filename">
+                <span class="icon">
+                
+                📄
+                
+                </span>
+                <a href="autoconf-2.13.tar.xz">autoconf-2.13.tar.xz</a>
+            </td>
+            <td class="size">
+                
+                293.08 KB
+                
+            </td>
+            <td class="date">
+                
+                2016-09-20 07:02:52 PDT
+                
+            </td>
+			<td class="description">
+				
+
+			</td>
+        </tr>
+        
+        <tr>
+            <td class="filename">
+                <span class="icon">
+                
+                📄
+                
+                </span>
+                <a href="doinst.sh">doinst.sh</a>
+            </td>
+            <td class="size">
+                
+                319.00 B
+                
+            </td>
+            <td class="date">
+                
+                2018-06-14 07:01:00 PDT
+                
+            </td>
+			<td class="description">
+				
+
+			</td>
+        </tr>
+        
+        <tr>
+            <td class="filename">
+                <span class="icon">
+                
+                📄
+                
+                </span>
+                <a href="glib-c-arc4random.c.patch">glib-c-arc4random.c.patch</a>
+            </td>
+            <td class="size">
+                
+                606.00 B
+                
+            </td>
+            <td class="date">
+                
+                2022-10-14 21:07:45 PDT
+                
+            </td>
+			<td class="description">
+				
+
+			</td>
+        </tr>
+        
+        <tr>
+            <td class="filename">
+                <span class="icon">
+                
+                📄
+                
+                </span>
+                <a href="palemoon.SlackBuild">palemoon.SlackBuild</a>
+            </td>
+            <td class="size">
+                
+                9.72 KB
+                
+            </td>
+            <td class="date">
+                
+                2026-02-25 06:32:03 PST
+                
+            </td>
+			<td class="description">
+				
+
+			</td>
+        </tr>
+        
+        <tr>
+            <td class="filename">
+                <span class="icon">
+                
+                📄
+                
+                </span>
+                <a href="palemoon.desktop">palemoon.desktop</a>
+            </td>
+            <td class="size">
+                
+                528.00 B
+                
+            </td>
+            <td class="date">
+                
+                2018-06-14 07:01:00 PDT
+                
+            </td>
+			<td class="description">
+				
+
+			</td>
+        </tr>
+        
+        <tr>
+            <td class="filename">
+                <span class="icon">
+                
+                📄
+                
+                </span>
+                <a href="palemoon.info">palemoon.info</a>
+            </td>
+            <td class="size">
+                
+                567.00 B
+                
+            </td>
+            <td class="date">
+                
+                2026-02-24 19:50:13 PST
+                
+            </td>
+			<td class="description">
+				
+
+			</td>
+        </tr>
+        
+        <tr>
+            <td class="filename">
+                <span class="icon">
+                
+                📄
+                
+                </span>
+                <a href="slack-desc">slack-desc</a>
+            </td>
+            <td class="size">
+                
+                993.00 B
+                
+            </td>
+            <td class="date">
+                
+                2018-06-14 07:01:00 PDT
+                
+            </td>
+			<td class="description">
+				
+
+			</td>
+        </tr>
+        
+    </table>
+</body>
+</html>
