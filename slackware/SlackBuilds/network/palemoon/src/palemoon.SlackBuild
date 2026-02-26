@@ -37,7 +37,7 @@ TARBALL2A=${TARBALL2A:-UXP-RB_20260121}
 TARBALL2B=${TARBALL2B:-RB_20260121}
 BUILD=${BUILD:-1}
 TAG=${TAG:-_SBo}
-PKGTYPE=${PKGTYPE:-tgz}
+PKGTYPE=${PKGTYPE:-txz}
 
 if [ -z "$ARCH" ]; then
   case "$( uname -m )" in
