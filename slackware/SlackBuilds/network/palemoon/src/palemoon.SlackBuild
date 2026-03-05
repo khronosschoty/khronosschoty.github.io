@@ -28,7 +28,7 @@
 cd $(dirname $0) ; CWD=$(pwd)
 
 PRGNAM=palemoon
-VERSION=${VERSION:-34.0.1}
+VERSION=${VERSION:-34.1.0}
 SRCNAM1=${SRCNAM1:-pale-moon}
 TARBALL1A=${TARBALL1A:-Pale-Moon-${VERSION}_Release}
 TARBALL1B=${TARBALL1B:-${VERSION}_Release}
