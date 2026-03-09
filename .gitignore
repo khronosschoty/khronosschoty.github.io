@@ -3,3 +3,5 @@
 slackware/SlackBuilds/network/palemoon
 slackware/SlackBuilds/network/palemoon/*
 slackware/SlackBuilds/network/palemoon/update-palemoon.sh
+backup
+backup/*

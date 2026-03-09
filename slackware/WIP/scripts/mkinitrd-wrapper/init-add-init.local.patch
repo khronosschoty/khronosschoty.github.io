@@ -1,0 +1,14 @@
+# Note: for dev reasons this file has been marked immutable
+--- a/initrd-tree/init	2025-11-06 11:44:10.000000000 -0700
++++ b/initrd-tree/init	2026-03-05 08:08:28.617799104 -0700
+@@ -170,6 +170,10 @@
+   fi
+ fi
+ 
++if [ -f /init.local ] && [ -x /init.local ]; then
++	./init.local
++fi
++
+ # Sometimes the devices need extra time to be available.
+ # A root filesystem on USB is a good example of that.
+ sleep $WAIT

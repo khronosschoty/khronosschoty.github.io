@@ -1,0 +1,20 @@
+#!/bin/ash
+# /init.local: local machine specific early-init commands in the
+# initramfs environment
+#
+# Note: for dev reasons, the template version of this file (found as
+# /usr/local/share/mkinitrd/init.local), has been marked as immutable
+
+for i in $(seq 1 20); do
+	[ -e /sys/class/leds/system76::kbd_backlight/brightness ] && break
+	sleep 0.1
+done
+
+# rc system76_keyboard_led
+Pang11KeyLED=/sys/class/leds/system76::kbd_backlight/color*
+if [ -e "/sys/class/leds/system76::kbd_backlight/brightness" ]; then
+for d in $Pang11KeyLED; do
+printf "00FF00" > "$d"
+done
+printf 255 > "/sys/class/leds/system76::kbd_backlight/brightness"
+fi

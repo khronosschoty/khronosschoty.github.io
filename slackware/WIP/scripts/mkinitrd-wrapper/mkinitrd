@@ -1,0 +1,55 @@
+#!/bin/sh
+# /usr/local/sbin/mkinitrd
+
+set -e
+
+CWD="$(pwd)"
+Kversion=${Kversion:-"$([ -L /usr/src/linux ] && readlink \
+	/usr/src/linux | cut -d - -f2)"}
+[ ! -f /boot/efi/vmlinuz.efi ] && \
+	printf "%s\n" "/boot/efi/vmlinuz.efi not found"
+BOOT_EFI_VMLINUZ="$(strings /boot/efi/vmlinuz.efi | grep version \
+	| head -n 1 | cut -d ' ' -f1)"
+
+for SAN_CHECK in "$Kversion" "$BOOT_EFI_VMLINUZ"; do
+    if [ -z "$SAN_CHECK" ]; then
+		printf "%s\n" "Kernel Version vars/strings: zero"
+		exit 1
+	fi
+	if printf "%s\n" "$SAN_CHECK" | grep -q '[^0-9.]'; then
+		printf "%s\n" "unexpected kernel version: '$SAN_CHECK'" \
+		"expected '\$NUM.\$NUM.\$NUM'"
+		exit 1
+	fi
+done
+
+if [ $Kversion != "$BOOT_EFI_VMLINUZ" ]; then
+	[ -d /boot/initrd-tree ] && rm -rf /boot/initrd-tree
+	cp -v /boot/vmlinuz-$Kversion /boot/efi/vmlinuz.efi
+fi
+if printf "%s\n" "$@" | grep -- "-c" ; then
+	rm -rvf /boot/initrd-tree
+fi
+if [ ! -d /boot/initrd-tree ]; then 
+	mkdir /boot/initrd-tree && cd /boot/initrd-tree
+	tar -xzvf /usr/share/mkinitrd/initrd-tree.tar.gz && cd "$CWD"
+	cp -v /boot/vmlinuz-$Kversion /boot/efi/vmlinuz.efi
+fi
+
+printf "%s\n" "Applying slack-diff modifications to the initrd-tree."
+
+if patch -p1 -N --dry-run /boot/initrd-tree/init  \
+		< /usr/local/share/mkinitrd/init-add-init.local.patch &&
+	[ -f /boot/initrd-tree/init ]
+then
+	patch -p1 /boot/initrd-tree/init \
+		< /usr/local/share/mkinitrd/init-add-init.local.patch
+	while read -r LINE; do
+		printf "%s\n" "$LINE" >> /boot/initrd-tree/init.local
+	done < /usr/local/share/mkinitrd/init.local
+	chmod 755 /boot/initrd-tree/init.local
+fi
+
+ARGS="$(printf "%s\n" "$@" | sed 's|-c||' | sed ':a;N;$!ba;s/\n//g')"
+#printf "%s\n" "$ARGS"
+/sbin/mkinitrd "$ARGS"

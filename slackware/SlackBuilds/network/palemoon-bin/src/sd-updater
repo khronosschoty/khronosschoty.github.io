@@ -1,0 +1,63 @@
+#!/bin/sh
+# $CWD/slackbuild.info
+
+set -e
+
+CWD="$(pwd)"
+PRGNAM="${PRGNAM:-palemoon-bin}"
+. "$CWD"/"$PRGNAM.info"
+TMP="${TMP:-/tmp/SBo/user}"
+OUTPUT=${OUTPUT:-/var/media/khronosschoty.org/output/SBo}
+
+FILES="README \
+doinst.sh \
+palemoon-bin.SlackBuild \
+palemoon-bin.desktop \
+palemoon-bin.info \
+slack-desc"
+[ ! -d "$OUTPUT" ] && mkdir -p "$OUTPUT"
+[ -d "$TMP/$PRGNAM" ] && [ -n "$TMP" ] && rm -rv "$TMP/$PRGNAM"
+mkdir -v "$TMP/$PRGNAM" || exit 1
+cd "$TMP/$PRGNAM"
+for F in $FILES; do
+	cp -v "$CWD/$F" .
+done
+
+SRC="palemoon-$VERSION.linux-x86_64-gtk2.tar.xz"
+
+N=$(printf "%s\n" "$SRC" | wc -l)
+SEQ_INC() {  
+NUM=1
+	 while [ "$NUM" -le "$N" ]; do
+	 printf "%s\n" $NUM
+	 NUM=$((NUM+1))
+done 
+}
+SEQ_DEC() {
+NUM=$N
+	while [ "$NUM" -ge 1 ]; do
+	printf "%s\n" "$NUM"
+	NUM=$((NUM-1))
+done
+}
+
+for NUM in $(SEQ_INC); do eval "SRC$NUM=\"$(printf '%s\n' "$SRC" | awk "NR==$NUM")\""; done
+for NMD5 in $(for NUM in $(SEQ_DEC); do eval "echo \${SRC$NUM}"; done); do NEW_MD5="$(md5sum "$CWD/$NMD5" | cut -d ' ' -f1) $NEW_MD5"; done
+for NUM in $(SEQ_INC); do eval "NEW_MD5$NUM=\"$(printf '%s\n' "$NEW_MD5" | awk "NR==$NUM")\""; done
+NUM=1
+for S in $MD5SUM_x86_64; do eval NEW=\$NEW_MD5$NUM; sed -i "s/$S/$NEW/" "$PRGNAM.info"; NUM=$((NUM+1)); done
+
+. ./"$PRGNAM.info"
+for S in $SRC; do 
+	MD5_CHECK="$(md5sum "$CWD/$S" | cut -d ' ' -f1)" 
+	if grep "$MD5_CHECK" ./"$PRGNAM.info" 1> /dev/null 2> /dev/null; then
+		printf "%s\n" "MD5SUM Check for $S SUCCEEDED: $MD5_CHECK" 
+	else
+		printf "%s\n" "MD5SUM Check for $S FAILED: $MD5_CHECK"
+		exit 1
+	fi
+done
+
+cd "$TMP"
+
+tar -zvcf "$OUTPUT/$PRGNAM.tar.gz" "$PRGNAM"

@@ -4,9 +4,9 @@ HOMEPAGE="http://www.palemoon.org/"
 DOWNLOAD="https://repo.palemoon.org/MoonchildProductions/Pale-Moon/archive/34.1.0_Release.tar.gz \
           https://repo.palemoon.org/MoonchildProductions/UXP/archive/RB_20260301.tar.gz \
           http://ponce.cc/slackware/sources/repo/autoconf-2.13.tar.xz"
-MD5SUM="a458417913b60b6d8e66050be8f53789 \
-        c34dea512c4345282d2766976cb0f856 \
-        f2994d302cf736e7e71974edfa51da3c"
+MD5SUM="a458417913b6d8e66050be8f53789 \
+        c34dea512c4345282d27669b0f856 \
+        f2994d302cf736e7e71974ea51da3c"
 DOWNLOAD_x86_64=""
 MD5SUM_x86_64=""
 REQUIRES=""
