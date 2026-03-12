@@ -5,3 +5,10 @@ slackware/SlackBuilds/network/palemoon/*
 slackware/SlackBuilds/network/palemoon/update-palemoon.sh
 backup
 backup/*
+notes
+notes.bak
+sd-updater
+*_Release.tar.gz
+RB_*.tar.gz
+UXP-RB_*.tar.gz
+ksdotorg-network-index.patch
